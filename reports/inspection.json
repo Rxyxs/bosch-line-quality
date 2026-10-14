@@ -1,0 +1,120 @@
+{
+  "fractions": [
+    0.001,
+    0.002,
+    0.005,
+    0.01,
+    0.02,
+    0.05,
+    0.1
+  ],
+  "capture": {
+    "numeric": [
+      0.0882,
+      0.1327,
+      0.2057,
+      0.2524,
+      0.2794,
+      0.3362,
+      0.4033
+    ],
+    "numeric+process": [
+      0.0917,
+      0.1348,
+      0.2073,
+      0.2544,
+      0.2868,
+      0.3422,
+      0.4069
+    ],
+    "numeric+process+sequence": [
+      0.1538,
+      0.2269,
+      0.3047,
+      0.3897,
+      0.5198,
+      0.7418,
+      0.8038
+    ]
+  },
+  "policy": {
+    "numeric": {
+      "10": {
+        "inspect_frac": 0.00458,
+        "relative_cost": 0.8793
+      },
+      "50": {
+        "inspect_frac": 0.01039,
+        "relative_cost": 0.7812
+      },
+      "100": {
+        "inspect_frac": 0.05383,
+        "relative_cost": 0.7471
+      },
+      "200": {
+        "inspect_frac": 0.35615,
+        "relative_cost": 0.6443
+      },
+      "500": {
+        "inspect_frac": 0.88469,
+        "relative_cost": 0.3366
+      },
+      "1000": {
+        "inspect_frac": 0.99405,
+        "relative_cost": 0.1715
+      }
+    },
+    "numeric+process": {
+      "10": {
+        "inspect_frac": 0.00423,
+        "relative_cost": 0.8772
+      },
+      "50": {
+        "inspect_frac": 0.01447,
+        "relative_cost": 0.7781
+      },
+      "100": {
+        "inspect_frac": 0.03762,
+        "relative_cost": 0.7417
+      },
+      "200": {
+        "inspect_frac": 0.34325,
+        "relative_cost": 0.6327
+      },
+      "500": {
+        "inspect_frac": 0.89958,
+        "relative_cost": 0.3346
+      },
+      "1000": {
+        "inspect_frac": 0.99442,
+        "relative_cost": 0.1716
+      }
+    },
+    "numeric+process+sequence": {
+      "10": {
+        "inspect_frac": 0.00725,
+        "relative_cost": 0.7781
+      },
+      "50": {
+        "inspect_frac": 0.05125,
+        "relative_cost": 0.4286
+      },
+      "100": {
+        "inspect_frac": 0.0628,
+        "relative_cost": 0.3295
+      },
+      "200": {
+        "inspect_frac": 0.07231,
+        "relative_cost": 0.2727
+      },
+      "500": {
+        "inspect_frac": 0.1776,
+        "relative_cost": 0.2247
+      },
+      "1000": {
+        "inspect_frac": 0.72557,
+        "relative_cost": 0.1613
+      }
+    }
+  }
+}

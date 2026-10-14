@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bosch Line Quality</title>
+<meta name="description" content="Which parts of a Bosch production line will fail quality control, and how many failures an inspection budget catches.">
+<style>
+  :root {
+    --bg: #FBFAF8; --surface: #FFFFFF; --ink: #23201D; --muted: #6B645D;
+    --line: #E3DED7; --accent: #B5553D; --good: #4C7A3E;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #151719; --surface: #1D2023; --ink: #E9EBED; --muted: #A2A8AE;
+      --line: #2E3236; --accent: #D9765C; --good: #7FAE6B;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #151719; --surface: #1D2023; --ink: #E9EBED; --muted: #A2A8AE;
+    --line: #2E3236; --accent: #D9765C; --good: #7FAE6B;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 16px/1.65 -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 920px; margin: 0 auto; padding: 0 16px 96px; }
+  header { padding: 72px 0 40px; border-bottom: 1px solid var(--line); margin-bottom: 44px; }
+  h1 { font-size: clamp(1.9rem, 5vw, 2.7rem); line-height: 1.15; margin: 0 0 18px; letter-spacing: -0.02em; }
+  .lede { font-size: clamp(1.02rem, 2.4vw, 1.17rem); color: var(--muted); margin: 0 0 24px; max-width: 64ch; }
+  .lede strong { color: var(--ink); }
+  .links a {
+    display: inline-block; margin: 0 10px 10px 0; padding: 9px 15px;
+    border: 1px solid var(--line); border-radius: 7px; text-decoration: none;
+    color: var(--ink); background: var(--surface); font-size: 0.9rem; transition: border-color .15s;
+  }
+  .links a:hover { border-color: var(--accent); }
+  .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin: 28px 0 0; }
+  .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 9px; padding: 14px 16px; }
+  .stat b { display: block; font-size: 1.6rem; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; }
+  .stat span { color: var(--muted); font-size: 0.85rem; }
+  h2 { font-size: 1.42rem; margin: 56px 0 8px; letter-spacing: -0.01em; padding-top: 10px; border-top: 1px solid var(--line); }
+  h2 .num { color: var(--accent); font-variant-numeric: tabular-nums; margin-right: 8px; }
+  p, li { max-width: 72ch; }
+  p { margin: 0 0 16px; }
+  figure { margin: 26px 0; }
+  figure img { width: 100%; height: auto; display: block; border: 1px solid var(--line); border-radius: 9px; background: #fff; }
+  figcaption { font-size: 0.85rem; color: var(--muted); margin-top: 9px; max-width: 72ch; }
+  .tablewrap { overflow-x: auto; margin: 22px 0; }
+  table { border-collapse: collapse; width: 100%; font-size: 0.9rem; min-width: 460px; }
+  th, td { padding: 9px 12px; text-align: right; border-bottom: 1px solid var(--line); }
+  th:first-child, td:first-child { text-align: left; }
+  thead th { color: var(--muted); font-weight: 600; font-size: 0.8rem; text-transform: uppercase; letter-spacing: .04em; }
+  .win td { color: var(--good); font-weight: 600; }
+  code { background: var(--surface); border: 1px solid var(--line); border-radius: 4px; padding: 1px 5px; font-size: 0.88em; }
+  footer { margin-top: 64px; padding-top: 20px; border-top: 1px solid var(--line); color: var(--muted); font-size: 0.85rem; }
+  footer a { color: var(--muted); }
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Which parts will fail quality control?</h1>
+  <p class="lede">1.18 million real parts from a Bosch assembly line, 52 stations, <strong>0.58% failing</strong> final inspection. The useful question is not a leaderboard metric but an inspection budget: pull the riskiest few percent of parts, and how many failures do you stop?</p>
+  <div class="links">
+    <a href="https://github.com/Rxyxs/bosch-line-quality">Code on GitHub</a>
+    <a href="https://www.kaggle.com/competitions/bosch-production-line-performance">Kaggle competition</a>
+  </div>
+  <div class="stats">
+    <div class="stat"><b>0.418</b><span>Kaggle private MCC (winner ~0.52)</span></div>
+    <div class="stat"><b>61%</b><span>of failures caught inspecting 5% of later parts</span></div>
+    <div class="stat"><b>11x</b><span>failure rate next to a failed part</span></div>
+    <div class="stat"><b>40%</b><span>cost of quality vs no inspection, escape = 100x inspection</span></div>
+  </div>
+</header>
+
+<h2><span class="num">01</span>Failures come in lots</h2>
+<p>Parts produced next to a failed part fail at 6.4%, eleven times the base rate. The strongest features describe where a part sits in its lot: whether the next part has a consecutive Id and the same start time. They use timestamps and Ids only, never a neighbour&#39;s label, so nothing leaks.</p>
+<div class="tablewrap"><table>
+  <thead><tr><th>Features</th><th>CV MCC</th><th>Later parts MCC</th></tr></thead>
+  <tbody>
+    <tr><td>968 measurements</td><td>0.228</td><td>0.061</td></tr>
+    <tr><td>+ process (route, stations, time per line)</td><td>0.231</td><td>0.038</td></tr>
+    <tr class="win"><td>+ sequence (position in the production flow)</td><td>0.402</td><td>0.207</td></tr>
+  </tbody>
+</table></div>
+
+<h2><span class="num">02</span>Cross-validation flatters the model</h2>
+<figure>
+  <img src="img/validation.png" alt="Bar chart of MCC by feature set under shuffled CV and a temporal holdout; every set scores much lower on later parts, measurements only falling from 0.228 to 0.061.">
+  <figcaption>Shuffled CV mixes parts from the whole period. On parts produced after the training period, measurements alone drop to 0.061; only the sequence features hold up, and their threshold still transfers (0.207 vs an oracle 0.208).</figcaption>
+</figure>
+<p>The Kaggle test set interleaves with training parts in time, so the leaderboard (0.418) tracks CV. A model running on the line would see the temporal number, and that is the one the inspection policy below is built on.</p>
+
+<h2><span class="num">03</span>From a score to an inspection policy</h2>
+<figure>
+  <img src="img/capture.png" alt="Capture curve: percent of failures caught against percent of parts inspected on a log axis; the sequence model reaches about 74% at 5% inspected, measurement-only models about 35%, random inspection 5%.">
+  <figcaption>Out-of-fold capture curve. On later parts the sequence model catches 22% of failures at 1% inspected, 32% at 2%, 61% at 5% and 77% at 10%.</figcaption>
+</figure>
+<p>With inspection costing 1 and an escaped failure costing 100, the cost-minimising policy inspects 6.6% of production and brings the cost of quality to 40% of inspecting nothing.</p>
+
+<h2><span class="num">04</span>Caveats</h2>
+<ul>
+  <li>Measurements are anonymous, so the few that matter (stations S29, S24, S33) cannot be traced to physical quantities.</li>
+  <li>One model family, default-ish hyperparameters, no ensembling beyond three seeds.</li>
+  <li>The cost model assumes inspection catches every failure it examines.</li>
+</ul>
+
+<footer>
+  Pablo Reyes · Data: Bosch Production Line Performance, Kaggle (not redistributed). Code under MIT.
+</footer>
+</div>
+</body>
+</html>
