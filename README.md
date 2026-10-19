@@ -1,4 +1,4 @@
-**English** | [Español](README.es.md)
+[English ] | [[Español](README.es.md) ]
 
 # Bosch production line: which parts will fail quality control?
 

@@ -1,4 +1,4 @@
-[English](README.md) | **Español**
+[[English](README.md) ] | [Español ]
 
 # Línea de producción Bosch: ¿qué piezas van a fallar el control de calidad?
 
